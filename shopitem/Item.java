@@ -5,6 +5,7 @@ public class Item {
     private int itemId;
     private float price;
     private String name;
+    private float sum;
 
     public Item(int itemId, float price, String name) {
         this.itemId = itemId;
@@ -25,8 +26,14 @@ public class Item {
         return name;
     }
 
+    public float getSum(int quantity, float price) {
+
+        return quantity * price;
+    }
+
     @Override
     public String toString() {
-        return "Item [itemId =" + itemId + ", price=" + price + ", name=" + name + "]\n"; 
+        return "Item [itemId =" + itemId + ", price=" + price + ", name=" + name + "]\n";
     }
+
 }
