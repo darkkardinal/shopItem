@@ -1,9 +1,7 @@
-
 package shopitem;
 
-
 public class Cards {
-    
+
     private int cardId;
     private int cardPercent;
 
@@ -19,6 +17,5 @@ public class Cards {
     public int getCardPercent() {
         return cardPercent;
     }
-  
-    
+
 }
