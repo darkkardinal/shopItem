@@ -22,6 +22,14 @@ public class ShopItemRunner {
 
         };
 
+        ArrayList<Cards> c = new ArrayList<Cards>() {
+            {
+                add(new Cards(1234, 5));   // %5 скидка
+
+            }
+
+        };
+
         float total = 0;
 
         while (true) {
@@ -38,7 +46,8 @@ public class ShopItemRunner {
             float price;
             float sum;
             int id = 0;
-
+            int idCard = 0;
+            int discount;
             System.out.format("%3s|%30s|%10s|%10s|%n", "QTY", "Description", "Price", "Total");
             for (int i = 0; i < parts.length; i++) {
                 item = parts[i].split("-");
@@ -46,19 +55,31 @@ public class ShopItemRunner {
                 price = 0;
                 sum = 0;
                 name = "";
+                discount = 0;
                 for (int j = 0; j < item.length; j++) {
 
                     if (j == 0) {
-                        name = p.get((Integer) Integer.parseInt(item[j]) - 1).getName();
-                        price = p.get((Integer) Integer.parseInt(item[j]) - 1).getPrice();
+                        if (item[j].toUpperCase() != "CARD") {
+                            id = (Integer) Integer.parseInt(item[j]) - 1;
+                            name = p.get(id).getName();
+                            price = p.get(id).getPrice();
+
+                        } else {
+                            idCard = (Integer) Integer.parseInt(item[j]) - 1;
+                        }
 
                     }
                     if (j == 1) {
-                        cnt = (Integer) Integer.parseInt(item[j]);
-                        sum = p.get((Integer) Integer.parseInt(item[j]) - 1).getSum(cnt, price);
+                        if (idCard != 0) {
+                            cnt = (Integer) Integer.parseInt(item[j]);
+                            sum = p.get(id).getSum(cnt, price);
+                        } else {
+discount = 
+                        }
+
                     }
 
-                    total += p.get((Integer) Integer.parseInt(item[j]) - 1).getSum(cnt, price);
+                    total += sum;
 
                 }
                 System.out.format("%3s|%30s|%10s|%10s|%n", cnt, name, price, String.format("%.2f", sum));
