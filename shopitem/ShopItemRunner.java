@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.Scanner;
+
 import shopitem.Item;
 
 public class ShopItemRunner {
@@ -31,7 +32,7 @@ public class ShopItemRunner {
         };
 
         float total = 0;
-
+        float discount = 0;
         while (true) {
             System.out.println("Выберите товар и количество или введите `end`: ");
             String input = scanner.nextLine();
@@ -47,7 +48,7 @@ public class ShopItemRunner {
             float sum;
             int id = 0;
             int idCard = 0;
-            int discount;
+
             System.out.format("%3s|%30s|%10s|%10s|%n", "QTY", "Description", "Price", "Total");
             for (int i = 0; i < parts.length; i++) {
                 item = parts[i].split("-");
@@ -59,22 +60,22 @@ public class ShopItemRunner {
                 for (int j = 0; j < item.length; j++) {
 
                     if (j == 0) {
-                        if (item[j].toUpperCase() != "CARD") {
+                        if (item[j].equalsIgnoreCase(new String("card"))) {
+
+                            idCard = (Integer) Integer.parseInt(item[j + 1]);
+                            discount = c.get(j).getCardPercent();
+                        } else {
                             id = (Integer) Integer.parseInt(item[j]) - 1;
                             name = p.get(id).getName();
                             price = p.get(id).getPrice();
 
-                        } else {
-                            idCard = (Integer) Integer.parseInt(item[j]) - 1;
                         }
 
                     }
                     if (j == 1) {
-                        if (idCard != 0) {
+                        if (idCard == 0) {
                             cnt = (Integer) Integer.parseInt(item[j]);
                             sum = p.get(id).getSum(cnt, price);
-                        } else {
-discount = 
                         }
 
                     }
@@ -82,8 +83,18 @@ discount =
                     total += sum;
 
                 }
-                System.out.format("%3s|%30s|%10s|%10s|%n", cnt, name, price, String.format("%.2f", sum));
+                if (discount != 0) {
+                    total = total - (total * discount / 100);
 
+                }
+                if (idCard == 0) {
+                    System.out.format("%3s|%30s|%10s|%10s|%n", cnt, name, price, String.format("%.2f", sum));
+                }
+
+
+            }
+            if (discount != 0) {
+                System.out.format("%n%3s%48s%n", "Discount", String.format("%.2f", (total * discount / 100)));
             }
             System.out.format("%n%3s%51s%n", "Total", String.format("%.2f", total));
 
