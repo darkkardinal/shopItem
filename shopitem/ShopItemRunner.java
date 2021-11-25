@@ -26,6 +26,8 @@ public class ShopItemRunner {
         ArrayList<Cards> c = new ArrayList<Cards>() {
             {
                 add(new Cards(1234, 5));   // %5 скидка
+                add(new Cards(1, 100));   // %5 скидка
+
 
             }
 
@@ -46,11 +48,12 @@ public class ShopItemRunner {
             int cnt;
             float price;
             float sum;
-            int id = 0;
-            int idCard = 0;
+
 
             System.out.format("%3s|%30s|%10s|%10s|%n", "QTY", "Description", "Price", "Total");
             for (int i = 0; i < parts.length; i++) {
+                int id = 0;
+                int idCard = 0;
                 item = parts[i].split("-");
                 cnt = 0;
                 price = 0;
@@ -62,12 +65,27 @@ public class ShopItemRunner {
                     if (j == 0) {
                         if (item[j].equalsIgnoreCase(new String("card"))) {
 
-                            idCard = (Integer) Integer.parseInt(item[j + 1]);
-                            discount = c.get(j).getCardPercent();
+                            for (int m = 0; m < c.size(); m++) {
+                                if (c.get(m).getCardId() == Integer.parseInt(item[j + 1])) {
+                                    idCard = c.get(m).getCardId();
+                                    discount = c.get(m).getCardPercent();
+                                    break;
+                                }
+                            }
+
+
                         } else {
-                            id = (Integer) Integer.parseInt(item[j]) - 1;
-                            name = p.get(id).getName();
-                            price = p.get(id).getPrice();
+                            for (int m = 0; m < p.size(); m++) {
+                                if (p.get(m).getItemId() == Integer.parseInt(item[j])) {
+                                    id = p.get(m).getItemId();
+                                    name = p.get(m).getName();
+                                    price = p.get(m).getPrice();
+                                    break;
+
+                                }
+
+                            }
+
 
                         }
 
@@ -83,18 +101,21 @@ public class ShopItemRunner {
                     total += sum;
 
                 }
-                if (discount != 0) {
-                    total = total - (total * discount / 100);
 
-                }
                 if (idCard == 0) {
-                    System.out.format("%3s|%30s|%10s|%10s|%n", cnt, name, price, String.format("%.2f", sum));
+                    if (id != 0) {
+                        System.out.format("%3s|%30s|%10s|%10s|%n", cnt, name, price, String.format("%.2f", sum));
+                    }
                 }
 
 
             }
             if (discount != 0) {
-                System.out.format("%n%3s%48s%n", "Discount", String.format("%.2f", (total * discount / 100)));
+
+
+                System.out.format("%n%3s%48s%n", "Discount ", String.format("%.2f", (total * discount / 100)));
+                total = total - (total * discount / 100);
+
             }
             System.out.format("%n%3s%51s%n", "Total", String.format("%.2f", total));
 
